@@ -12,12 +12,13 @@ html {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 body {
   background-color: black;
   color: white;
+  width: 80%;
 }
 
 .clickable {

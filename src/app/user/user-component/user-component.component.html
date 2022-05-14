@@ -1,76 +1,77 @@
 <section id="about">
   <div class="container">
-    <div class="row" style="margin:10px;">
-      <div class="col-sm-2">Route:</div>
-      <div class="col-sm-6">
+    <form [formGroup]="freightForm" class="mt-5">
+      <div class="row">
+        <div class="col-sm-2">Route:</div>
+        <div class="col-sm-7">
 
-        <select name="route" id="route" class="form-control">
-
-          <option value="425">Jita/Perimeter ↔ MJ-5F9 (425 ISK/m³)</option>
-
-          <option value="425">Jita/Perimeter ↔ R1O-GN (425 ISK/m³)</option>
-
-          <option value="500">Jita/Perimeter ↔ Perrigen Industry Park Systems* (500 ISK/m³)</option>
-
-          <option value="500">Jita/Perimeter ↔ TKE Industry Park Systems** (500 ISK/m³)</option>
-
-          <option value="50">R1O-GN ↔ MJ-5F9 (50 ISK/m³)</option>
-
-          <option value="400">Jita/Perimeter ↔ Anywhere Geminate (400 ISK/m³)</option>
-
-          <option value="600">Jita/Perimeter ↔ XVV-21 (600 ISK/m³)</option>
-
-          <option value="600">MJ-5F9 ↔ XVV-21 (600 ISK/m³)</option>
-
-          <option value="150">T2-V8F ↔ XVV-21 (150 ISK/m³)</option>
-
-          <option value="700">T2-V8F ↔ Jita (700 ISK/m³)</option>
-
-          <option value="100">All Intra TKE Shipping (100 ISK/m³ 35mill MIN)</option>
-
-          <option value="400">Konora/Odebeinn ↔ MJ-5F9 (400 ISK/m³)</option>
-
-          <option value="300">Konora/Odebeinn ↔ Jita/Perimeter (300 ISK/m³)</option>
-
-          <option value="0">Any NPC Low Sec ↔ Jita/Perimeter (Flat 250mill ISK / 350,000 m³)</option>
-
-        </select>
-      </div>
-    </div>
-
-    <div class="row" style="margin:10px;">
-      <div class="col-sm-2">Contract Size:</div>
-      <div class="col-sm-6">
-        <div class="input-group add-on">
-          <input type="text" id="m3" class="form-control" value="0">
-          <div class="input-group-append">
-            <div class="input-group-text">m³</div>
-          </div>
+          <select name="route" id="route" class="form-control" formControlName="price">
+            <option [value]="null" disabled>Select Route</option>
+            <option *ngFor="let route of routes" [value]="route.id">
+              {{ route.start }} &lsaquo;&ndash;&rsaquo; {{ route.end }} ({{route.price}} ISK/m³)
+            </option>
+            <!-- <option value="500">Jita/Perimeter ↔ Perrigen Industry Park Systems* (500 ISK/m³)</option>
+            <option value="500">Jita/Perimeter ↔ TKE Industry Park Systems** (500 ISK/m³)</option>
+            <option value="50">R1O-GN ↔ MJ-5F9 (50 ISK/m³)</option>
+            <option value="400">Jita/Perimeter ↔ Anywhere Geminate (400 ISK/m³)</option>
+            <option value="600">Jita/Perimeter ↔ XVV-21 (600 ISK/m³)</option>
+            <option value="600">MJ-5F9 ↔ XVV-21 (600 ISK/m³)</option>
+            <option value="150">T2-V8F ↔ XVV-21 (150 ISK/m³)</option>
+            <option value="700">T2-V8F ↔ Jita (700 ISK/m³)</option>
+            <option value="100">All Intra TKE Shipping (100 ISK/m³ 35mill MIN)</option>
+            <option value="400">Konora/Odebeinn ↔ MJ-5F9 (400 ISK/m³)</option>
+            <option value="300">Konora/Odebeinn ↔ Jita/Perimeter (300 ISK/m³)</option> -->
+          </select>
         </div>
       </div>
-      <div class="col-sm-4">(350,000 m³ max)</div>
-    </div>
 
-    <div class="row" style="margin:10px;">
-      <div class="col-sm-2">Collateral:</div>
-      <div class="col-sm-6">
-        <div class="input-group add-on">
-          <input type="text" id="collat" class="form-control" value="0">
-          <div class="input-group-append">
-            <div class="input-group-text">ISK</div>
+      <div class="row">
+        <div class="col-sm-2">Contract Size:</div>
+        <div class="col-sm-7">
+          <div class="input-group add-on">
+            <input type="number" id="m3" class="form-control" name="cargoSize" placeholder="0"
+              formControlName="cargoSize">
+            <div class="input-group-append">
+              <div class="input-group-text">m³</div>
+            </div>
           </div>
         </div>
+        <div class="col-sm-3">(350,000 m³ max)</div>
       </div>
-      <div class="col-sm-4">(25 billion ISK max)</div>
-    </div>
 
-    <dl>
-      <dt>Reward</dt>
-      <dd id="reward">0 (0.00 Million ISK)</dd>
-      <dt>Recommendations</dt>
-      <dd id="recomendation">Please fill out the fields above.</dd>
-      <dd>* Perrigen Industral Park Systems: 7M4-4C | JZ-UQC | BEG-RL | XU7-CH | AY9X-Q | 9WVY-F | U-W436 | Z-ENUD</dd>
-      <dd>** TKE Industral Park Systems: RQOO-U | I2D3-5 | GQ-7SP | BGMZ-0</dd>
-    </dl>
+      <div class="row">
+        <div class="col-sm-2">Collateral:</div>
+        <div class="col-sm-7">
+          <div class="input-group add-on">
+            <input type="text" id="collat" class="form-control" name="collateral" placeholder="0"
+              formControlName="collateral">
+            <div class="input-group-append">
+              <div class="input-group-text">ISK</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">(25 billion ISK max)</div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-sm-12">
+          <h3>Price</h3>
+          <div *ngIf="price > 0; else elseBlock">
+            <p>Price: <span #priceSpan>{{price | number}}</span> <button (click)="copyText()">Copy price</button> </p>
+          </div>
+          <ng-template #elseBlock>
+            <p>Please fill out the form</p>
+          </ng-template>
+          <!--<dl>
+             <dt>Reward</dt>
+            <dd #reward>0 (0.00 Million ISK)</dd>
+            <dt>Recommendations</dt>
+            <dd id="recomendation">Please fill out the fields above.</dd>
+            <dd>* Perrigen Industral Park Systems: 7M4-4C | JZ-UQC | BEG-RL | XU7-CH | AY9X-Q | 9WVY-F | U-W436 | Z-ENUD
+            </dd>
+            <dd>** TKE Industral Park Systems: RQOO-U | I2D3-5 | GQ-7SP | BGMZ-0</dd>
+          </dl>-->
+        </div>
+      </div>
+    </form>
   </div>
 </section>
