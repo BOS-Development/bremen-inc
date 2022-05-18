@@ -7,10 +7,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminComponentComponent } from './admin/admin-component/admin-component.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserComponentComponent } from './user/user-component/user-component.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, AdminComponentComponent, UserComponentComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, AngularEditorModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent]
 })

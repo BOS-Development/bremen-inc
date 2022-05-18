@@ -1,4 +1,4 @@
-<section id="about">
+<section>
   <div class="container">
     <form [formGroup]="freightForm" class="mt-5">
       <div class="row">
@@ -7,7 +7,7 @@
 
           <select name="route" id="route" class="form-control" formControlName="price">
             <option [value]="null" disabled>Select Route</option>
-            <option *ngFor="let route of routes" [value]="route.id">
+            <option *ngFor="let route of routes" [value]="route.price">
               {{ route.start }} &lsaquo;&ndash;&rsaquo; {{ route.end }} ({{route.price}} ISK/m³)
             </option>
             <!-- <option value="500">Jita/Perimeter ↔ Perrigen Industry Park Systems* (500 ISK/m³)</option>
@@ -56,7 +56,8 @@
         <div class="col-sm-12">
           <h3>Price</h3>
           <div *ngIf="price > 0; else elseBlock">
-            <p>Price: <span #priceSpan>{{price | number}}</span> <button (click)="copyText()">Copy price</button> </p>
+            <p>Price: <span #priceSpan class="price-span">{{price | number}}</span> <button
+                class="btn btn-secondary ml-5" (click)="copyText()">Copy price</button> </p>
           </div>
           <ng-template #elseBlock>
             <p>Please fill out the form</p>
@@ -70,6 +71,9 @@
             </dd>
             <dd>** TKE Industral Park Systems: RQOO-U | I2D3-5 | GQ-7SP | BGMZ-0</dd>
           </dl>-->
+          <div class="sign-in-btn" (click)="signIn()">
+            <img src="assets/eve-sso-login-white-small.png" class="clickable" alt="Log in to eve">
+          </div>
         </div>
       </div>
     </form>

@@ -56,6 +56,8 @@ export class UserComponentComponent implements AfterViewInit {
     if (formData.price > 0 && formData.cargoSize > 0 && formData.collateral > 0) {
       let potentialPrice = formData.cargoSize * formData.collateral;
       this.price = potentialPrice < this.minimumPrice ? this.minimumPrice : potentialPrice;
+    } else {
+      this.price = 0;
     }
     console.log(formData);
   }
@@ -70,5 +72,10 @@ export class UserComponentComponent implements AfterViewInit {
       .catch(function () {
         console.log('err', text_to_copy);
       });
+  }
+
+  signIn(): void {
+    window.location.href =
+      'https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=https%3A%2F%2Flocalhost%2Fcallback%2F&client_id=<your-client-id>&scope=esi-characters.read_blueprints.v1&state=<unique-string>';
   }
 }

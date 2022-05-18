@@ -1,9 +1,60 @@
-<section>
-  <h2>Coupon Code Rules</h2>
-</section>
-<section>
-  <h2>Routes</h2>
-</section>
-<section>
-  <h2>Static Information</h2>
-</section>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Routes</h2> <button class="btn btn-primary add-button" (click)="addRoute()">Add Route</button>
+    </div>
+  </div>
+  <div class="row">
+
+    <form [formGroup]="routesForm">
+      <ng-container *ngFor="let route of routes; let i = index">
+        <div class="col-sm-12 mt-2 formBlock">
+          <div class="row">
+            <div class="col-sm-3 mt-2">
+              Route Start {{i}}
+            </div>
+            <div class="col-sm-9 mt-2">
+              <input type="text" class="form-control" [value]="route.start">
+            </div>
+            <div class="col-sm-3 mt-2">
+              Route End
+            </div>
+            <div class="col-sm-9 mt-2">
+              <input type="text" class="form-control" [value]="route.end">
+            </div>
+            <div class="col-sm-3 mt-2">
+              Price
+            </div>
+            <div class="col-sm-9 mt-2">
+              <input type="number" class="form-control" [value]="route.price">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <button (click)="saveRoute();" class="btn btn-primary">Save</button>
+              <button (click)="deleteRoute(i);" type="button" class="btn btn-danger ml-2">Delete</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-sm-12">
+      <h2>Coupon Code Rules</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 mt-5">
+      <h2>Static Information</h2>
+      <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
+      <button class="btn btn-primary mt-2" (click)="saveHtml()">Save HTML</button>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-sm-12">
+      <button class="btn btn-primary" (click)="saveAll()">Save All</button>
+    </div>
+  </div>
+</div>
