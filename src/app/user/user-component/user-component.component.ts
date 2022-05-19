@@ -1,6 +1,8 @@
+import { JsonpClientBackend } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Subscriber, Subscription } from 'rxjs';
+import { DataService } from 'src/app/services/data.service';
 interface FormModel {
   price: number;
   cargoSize: number;
@@ -15,26 +17,27 @@ interface FormModel {
 export class UserComponentComponent implements AfterViewInit {
   public freightForm: FormGroup;
   public price: number = 0;
-  public routes: any = [
-    {
-      id: '1',
-      start: 'Jita/Perimeter',
-      end: 'MJ-5F9',
-      price: '425'
-    },
-    {
-      id: '2',
-      start: 'Jita/Perimeter',
-      end: 'R1O-GN',
-      price: '425'
-    }
-  ];
+  routes: any;
+  // public routes: any = [
+  //   {
+  //     id: '1',
+  //     start: 'Jita/Perimeter',
+  //     end: 'MJ-5F9',
+  //     price: '425'
+  //   },
+  //   {
+  //     id: '2',
+  //     start: 'Jita/Perimeter',
+  //     end: 'R1O-GN',
+  //     price: '425'
+  //   }
+  // ];
   private formSubsciption: Subscription | undefined;
   private minimumPrice = 5000000;
 
   @ViewChild('priceSpan') priceSpan!: ElementRef<HTMLSpanElement>;
 
-  constructor() {
+  constructor(private dataSvc: DataService) {
     this.freightForm = new FormGroup({
       price: new FormControl(null),
       cargoSize: new FormControl(null, Validators.required),
@@ -42,6 +45,15 @@ export class UserComponentComponent implements AfterViewInit {
     });
   }
 
+  ngOnInit() {
+    this.dataSvc
+      .getPoll()
+      // clone the data object, using its known Config shape
+      .subscribe((data) => {
+        console.log(data.data.routes);
+        this.routes = data.data.routes;
+      });
+  }
   ngAfterViewInit(): void {
     this.formSubsciption = this.freightForm.valueChanges.subscribe((formData) => {
       this.calculateReward(formData);
@@ -54,7 +66,7 @@ export class UserComponentComponent implements AfterViewInit {
 
   calculateReward(formData: FormModel): void {
     if (formData.price > 0 && formData.cargoSize > 0 && formData.collateral > 0) {
-      let potentialPrice = formData.cargoSize * formData.collateral;
+      let potentialPrice = formData.cargoSize * formData.price + formData.collateral / 100;
       this.price = potentialPrice < this.minimumPrice ? this.minimumPrice : potentialPrice;
     } else {
       this.price = 0;
