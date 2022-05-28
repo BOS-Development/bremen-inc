@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Route } from 'src/app/interfaces/route.interface';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-admin-component',
@@ -13,20 +15,8 @@ export class AdminComponentComponent implements OnInit {
   public couponForm: FormGroup;
   htmlContent = '';
 
-  public routes: any = [
-    {
-      id: '1',
-      start: 'Jita/Perimeter',
-      end: 'MJ-5F9',
-      price: '425'
-    },
-    {
-      id: '2',
-      start: 'Jita/Perimeter',
-      end: 'R1O-GN',
-      price: '425'
-    }
-  ];
+  public routes: Route[] = [];
+  public coupons: any[] = [{ id: 1, entityId: '1111111', entityName: 'Name', value: '10' }];
 
   config: AngularEditorConfig = {
     editable: true,
@@ -54,7 +44,7 @@ export class AdminComponentComponent implements OnInit {
       }
     ]
   };
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private dataSvc: DataService) {
     this.routesForm = new FormGroup({
       start: new FormControl(null, Validators.required),
       end: new FormControl(null, Validators.required),
@@ -68,10 +58,19 @@ export class AdminComponentComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.dataSvc
+      .getPoll()
+      // clone the data object, using its known Config shape
+      .subscribe((data) => {
+        console.log(data);
+        this.routes = data.data.routes;
+        this.coupons = data.data.discounts;
+      });
+  }
 
   addRoute() {
-    this.routes.push({});
+    this.routes.push({ start: '', end: '', price: '' });
   }
 
   deleteRoute(i: number): void {

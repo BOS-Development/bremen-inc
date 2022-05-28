@@ -15,10 +15,8 @@ export class AppComponent {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.code = params['code'];
-      console.log(this.code);
       if (this.code)
         this.dataSvc.signIn(this.code).subscribe((data) => {
-          console.log(data);
           if (data && data.data) localStorage.setItem('accessToken', data.data);
         });
     });
