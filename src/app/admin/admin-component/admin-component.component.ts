@@ -10,6 +10,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 export class AdminComponentComponent implements OnInit {
   public routesForm: FormGroup;
+  public couponForm: FormGroup;
   htmlContent = '';
 
   public routes: any = [
@@ -55,22 +56,31 @@ export class AdminComponentComponent implements OnInit {
   };
   constructor(http: HttpClient) {
     this.routesForm = new FormGroup({
-      price: new FormControl(null),
+      start: new FormControl(null, Validators.required),
+      end: new FormControl(null, Validators.required),
+      price: new FormControl(null, Validators.required)
+    });
+
+    this.couponForm = new FormGroup({
+      entityId: new FormControl(null),
       cargoSize: new FormControl(null, Validators.required),
       collateral: new FormControl(null, Validators.required)
     });
   }
 
   ngOnInit(): void {}
+
   addRoute() {
     this.routes.push({});
   }
-  saveRoute(): void {}
 
   deleteRoute(i: number): void {
     this.routes.splice(i, 1);
   }
-  saveHtml() {}
+  verifyEntity(entityId: string) {
+    return 'true';
+  }
+
   saveAll() {
     console.log('save');
   }

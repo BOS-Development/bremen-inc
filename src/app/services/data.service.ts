@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Route } from '../interfaces/route.interface';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,34 +12,49 @@ export class DataService {
     .set('Access-Control-Allow-Origin', '*')
     .set('Accept', 'application/vnd.bremeninc.v1+json');
 
-  public apiUrlList = {
+  public apiUrls = {
     Poll: 'https://cnutrjxu4gegl4edpp4w5rbqwm0nfdez.lambda-url.eu-west-2.on.aws/',
     RouteGet: 'https://vl2ylqp2ktgzmsssyxfcicbvqa0zhtew.lambda-url.eu-west-2.on.aws/', // requires routeId
     RoutePut: 'https://gmi3usvmqytg2hip5eid74kba40drmxg.lambda-url.eu-west-2.on.aws/', // requires routeId
     RoutePost: 'https://uswwm4ywmcntl7jakytb7fgrum0kvtdg.lambda-url.eu-west-2.on.aws/',
     RouteDelete: 'https://pzin6slwz7v6wdb3bo4qux6jja0izvnc.lambda-url.eu-west-2.on.aws/', // requires routeId
-    SigninEve: 'https://hn4y2jeshujoy7r5bk6n3hr6xa0lefwr.lambda-url.eu-west-2.on.aws/'
+    SignInEve: 'https://hn4y2jeshujoy7r5bk6n3hr6xa0lefwr.lambda-url.eu-west-2.on.aws/',
+    DiscountDelete: 'https://vwpesntrbnnxlk4e5udft5ia5i0hybxw.lambda-url.eu-west-2.on.aws/', // {discountId}
+    DiscountGet: 'https://53jl4pkrpqsub5yofvakdz3jfi0uhrgj.lambda-url.eu-west-2.on.aws/', // {discountId}
+    DiscountPost: 'https://xaqmd7qmetxxyoarvjk35evswa0hpecd.lambda-url.eu-west-2.on.aws/',
+    DiscountPut: 'https://ggb37yyglp5a42hqq6vgpkwo3e0psdqr.lambda-url.eu-west-2.on.aws/' // {discountId}
   };
 
   constructor(private http: HttpClient) {}
 
   getPoll() {
-    return this.http.get<any>(this.apiUrlList.Poll, { headers: this.headers });
+    const accessToken = localStorage.getItem('accessToken');
+    let headers;
+    if (accessToken) {
+      headers = this.headers.set('Authorization', 'Bearer ' + accessToken);
+    } else {
+      headers = this.headers;
+    }
+    return this.http.get<any>(this.apiUrls.Poll, { headers });
   }
 
   getRoute(id: number) {
-    return this.http.get<Route>(this.apiUrlList.RouteGet + id, { headers: this.headers });
+    return this.http.get<Route>(this.apiUrls.RouteGet + id, { headers: this.headers });
   }
 
   putRoute(id: number, route: Route) {
-    return this.http.put<Route>(this.apiUrlList.RoutePut + id, { route }, { headers: this.headers });
+    return this.http.put<Route>(this.apiUrls.RoutePut + id, { route }, { headers: this.headers });
   }
 
   postRoute(routes: Route[]) {
-    return this.http.put<Route>(this.apiUrlList.RoutePost, { routes }, { headers: this.headers });
+    return this.http.post<Route>(this.apiUrls.RoutePost, { routes }, { headers: this.headers });
   }
 
   deleteRoute(id: number) {
-    return this.http.put<Route>(this.apiUrlList.RouteDelete + id, { headers: this.headers });
+    return this.http.delete<Route>(this.apiUrls.RouteDelete + id, { headers: this.headers });
+  }
+
+  signIn(code: string) {
+    return this.http.post<any>(this.apiUrls.SignInEve, { data: code }, { headers: this.headers });
   }
 }

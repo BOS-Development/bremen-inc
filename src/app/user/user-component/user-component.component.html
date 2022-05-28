@@ -71,8 +71,11 @@
             </dd>
             <dd>** TKE Industral Park Systems: RQOO-U | I2D3-5 | GQ-7SP | BGMZ-0</dd>
           </dl>-->
-          <div class="sign-in-btn" (click)="signIn()">
+          <div *ngIf="!isLoggedIn" class="sign-in-btn" (click)="signIn()">
             <img src="assets/eve-sso-login-white-small.png" class="clickable" alt="Log in to eve">
+          </div>
+          <div *ngIf="isLoggedIn">
+            <h2> You managed to double click, now it's time to grab your dick. </h2>
           </div>
         </div>
       </div>

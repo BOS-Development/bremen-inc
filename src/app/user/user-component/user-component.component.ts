@@ -17,21 +17,8 @@ interface FormModel {
 export class UserComponentComponent implements AfterViewInit {
   public freightForm: FormGroup;
   public price: number = 0;
+  public isLoggedIn: boolean = false;
   routes: any;
-  // public routes: any = [
-  //   {
-  //     id: '1',
-  //     start: 'Jita/Perimeter',
-  //     end: 'MJ-5F9',
-  //     price: '425'
-  //   },
-  //   {
-  //     id: '2',
-  //     start: 'Jita/Perimeter',
-  //     end: 'R1O-GN',
-  //     price: '425'
-  //   }
-  // ];
   private formSubsciption: Subscription | undefined;
   private minimumPrice = 5000000;
 
@@ -50,8 +37,8 @@ export class UserComponentComponent implements AfterViewInit {
       .getPoll()
       // clone the data object, using its known Config shape
       .subscribe((data) => {
-        console.log(data.data.routes);
         this.routes = data.data.routes;
+        if (data.data.user) this.isLoggedIn = true;
       });
   }
   ngAfterViewInit(): void {
@@ -88,6 +75,6 @@ export class UserComponentComponent implements AfterViewInit {
 
   signIn(): void {
     window.location.href =
-      'https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=https%3A%2F%2Flocalhost%2Fcallback%2F&client_id=<your-client-id>&scope=esi-characters.read_blueprints.v1&state=<unique-string>';
+      'https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=http%3A//localhost/callback&client_id=e0741e296ea248419868b30ea151e694&state=123';
   }
 }

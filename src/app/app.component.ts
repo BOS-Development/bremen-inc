@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from './services/data.service';
 
 @Component({
@@ -8,18 +8,21 @@ import { DataService } from './services/data.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  dataObject = {
-    routes: [
-      {
-        id: '',
-        start: '',
-        end: '',
-        price: ''
-      }
-    ]
-  };
-  constructor(private router: Router) {}
+  code: string = '';
 
+  constructor(private router: Router, private route: ActivatedRoute, private dataSvc: DataService) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.code = params['code'];
+      console.log(this.code);
+      if (this.code)
+        this.dataSvc.signIn(this.code).subscribe((data) => {
+          console.log(data);
+          if (data && data.data) localStorage.setItem('accessToken', data.data);
+        });
+    });
+  }
   navigateHome(route?: string) {
     this.router.navigate([route ? route : '/']);
   }
