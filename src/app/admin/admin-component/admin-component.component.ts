@@ -63,8 +63,8 @@ export class AdminComponentComponent implements OnInit {
 
     this.couponForm = new FormGroup({
       entityId: new FormControl(null),
-      cargoSize: new FormControl(null, Validators.required),
-      collateral: new FormControl(null, Validators.required)
+      entityName: new FormControl(null, Validators.required),
+      value: new FormControl(null, Validators.required)
     });
   }
 
