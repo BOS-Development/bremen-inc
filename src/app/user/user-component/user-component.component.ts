@@ -18,6 +18,7 @@ export class UserComponentComponent implements AfterViewInit {
   public freightForm: FormGroup;
   public price: number = 0;
   public isLoggedIn: boolean = false;
+  public userCoupon: string = '';
   routes: any;
   private formSubsciption: Subscription | undefined;
   private minimumPrice = 5000000;
@@ -38,7 +39,10 @@ export class UserComponentComponent implements AfterViewInit {
       // clone the data object, using its known Config shape
       .subscribe((data) => {
         this.routes = data.data.routes;
-        if (data.data.user) this.isLoggedIn = true;
+        if (data.data.user) {
+          this.isLoggedIn = true;
+          this.userCoupon = data.data.user.code;
+        }
       });
   }
   ngAfterViewInit(): void {

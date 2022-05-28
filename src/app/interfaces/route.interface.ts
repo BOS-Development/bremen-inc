@@ -2,7 +2,7 @@ export interface Route {
   end: string;
   id?: string;
   modified?: string;
-  name?: string;
+  name: string;
   price: string;
   start: string;
 }

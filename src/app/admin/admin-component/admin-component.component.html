@@ -4,29 +4,31 @@
       <h2>Routes</h2> <button class="btn btn-primary add-button" (click)="addRoute()">Add Route</button>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="routesForm">
 
     <form [formGroup]="routesForm">
       <ng-container *ngFor="let route of routes; let i = index">
-        <div class="col-sm-12 mt-2 formBlock">
+        <div class="col-sm-12 mt-2 formBlock" [formGroupName]="route.name">
           <div class="row">
             <div class="col-sm-3 mt-2">
               Route Start
             </div>
             <div class="col-sm-9 mt-2">
-              <input type="text" class="form-control" [value]="route.start">
+              <input type="text" class="form-control" [id]="route.start + i" formControlName="start"
+                [value]="route.start">
             </div>
             <div class="col-sm-3 mt-2">
               Route End
             </div>
             <div class="col-sm-9 mt-2">
-              <input type="text" class="form-control" [value]="route.end">
+              <input type="text" class="form-control" [id]="route.end + i" formControlName="end" [value]="route.end">
             </div>
             <div class="col-sm-3 mt-2">
               Price
             </div>
             <div class="col-sm-9 mt-2">
-              <input type="number" class="form-control" [value]="route.price">
+              <input type="text" class="form-control" [id]="route.price + i" formControlName="price"
+                [value]="route.price">
             </div>
           </div>
           <div class="row">
@@ -39,7 +41,7 @@
     </form>
   </div>
 
-  <div class="row mt-5">
+  <div class="row mt-5" *ngIf="couponForm">
     <div class="col-sm-12">
       <h2>Coupon Code Rules</h2>
       <form [formGroup]="couponForm">
@@ -60,15 +62,15 @@
                 Entity Name: {{coupon.entityName}}
               </div>
               <div class="col-sm-3 mt-2">
-                Discount Value (%)
+                Discount Value
               </div>
               <div class="col-sm-9 mt-2">
-                <input type="number" class="form-control" [value]="coupon.value">
+                <input type="text" class="form-control" [value]="coupon.value">
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <button (click)="deleteRoute(i);" type="button" class="btn btn-danger ml-2">Delete</button>
+                <button (click)="deleteCoupon(coupon);" type="button" class="btn btn-danger ml-2">Delete</button>
               </div>
             </div>
           </div>
@@ -84,6 +86,7 @@
     <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
   </div>
 </div>
+
 <div class="row mt-5">
   <div class="col-sm-12">
     <button class="btn btn-primary" (click)="saveAll()">Save All</button>

@@ -75,7 +75,8 @@
             <img src="assets/eve-sso-login-white-small.png" class="clickable" alt="Log in to eve">
           </div>
           <div *ngIf="isLoggedIn">
-            <h2> You managed to double click, now it's time to grab your dick. </h2>
+            <h2> You managed to double click, now it's time to grab your dick. Your code is <span
+                class="text-danger">{{userCoupon}}</span> </h2>
           </div>
         </div>
       </div>
