@@ -47,18 +47,15 @@ export class AdminComponentComponent implements OnInit {
   constructor(http: HttpClient, private dataSvc: DataService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.dataSvc
-      .getPoll()
-      // clone the data object, using its known Config shape
-      .subscribe((data) => {
-        this.routes = data.data.routes;
-        this.createRoutesForm(this.routes);
+    this.dataSvc.getPoll().subscribe((data) => {
+      this.routes = data.data.routes;
+      this.createRoutesForm(this.routes);
 
-        this.coupons = data.data.discounts;
-        this.createCouponForm(this.coupons);
+      this.coupons = data.data.discounts;
+      this.createCouponForm(this.coupons);
 
-        this.htmlContent = data.data.htmlContent;
-      });
+      this.htmlContent = data.data.htmlContent;
+    });
   }
 
   addRoute() {
