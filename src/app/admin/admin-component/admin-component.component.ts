@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Route } from 'src/app/interfaces/route.interface';
 import { DataService } from 'src/app/services/data.service';
@@ -11,8 +11,8 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./admin-component.component.scss']
 })
 export class AdminComponentComponent implements OnInit {
-  public routesForm: FormGroup = new FormGroup({});
-  public couponForm: FormGroup = new FormGroup({});
+  public routesForm: UntypedFormGroup = new UntypedFormGroup({});
+  public couponForm: UntypedFormGroup = new UntypedFormGroup({});
   htmlContent = '';
 
   public routes: Route[] = [];
@@ -44,7 +44,7 @@ export class AdminComponentComponent implements OnInit {
       }
     ]
   };
-  constructor(http: HttpClient, private dataSvc: DataService, private fb: FormBuilder) {}
+  constructor(http: HttpClient, private dataSvc: DataService, private fb: UntypedFormBuilder) {}
 
   ngOnInit() {
     this.dataSvc.getPoll().subscribe((data) => {
@@ -80,11 +80,11 @@ export class AdminComponentComponent implements OnInit {
     for (const route of routes) {
       this.routesForm.addControl(
         route.name,
-        new FormGroup({
-          start: new FormControl(route.start, [Validators.required]),
-          end: new FormControl(route.end, [Validators.required]),
-          price: new FormControl(route.price, [Validators.required]),
-          id: new FormControl(route.id)
+        new UntypedFormGroup({
+          start: new UntypedFormControl(route.start, [Validators.required]),
+          end: new UntypedFormControl(route.end, [Validators.required]),
+          price: new UntypedFormControl(route.price, [Validators.required]),
+          id: new UntypedFormControl(route.id)
         })
       );
     }
@@ -94,10 +94,10 @@ export class AdminComponentComponent implements OnInit {
     for (const coupon of coupons) {
       this.couponForm.addControl(
         coupon.id,
-        new FormGroup({
-          entityId: new FormControl(coupon.entityId, [Validators.required]),
-          value: new FormControl(coupon.value, [Validators.required]),
-          id: new FormControl(coupon.id, [Validators.required])
+        new UntypedFormGroup({
+          entityId: new UntypedFormControl(coupon.entityId, [Validators.required]),
+          value: new UntypedFormControl(coupon.value, [Validators.required]),
+          id: new UntypedFormControl(coupon.id, [Validators.required])
         })
       );
     }

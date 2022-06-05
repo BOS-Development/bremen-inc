@@ -1,6 +1,6 @@
 import { JsonpClientBackend } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, UntypedFormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
 import { Subscriber, Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 interface FormModel {
@@ -15,7 +15,7 @@ interface FormModel {
   styleUrls: ['./user-component.component.scss']
 })
 export class UserComponentComponent implements AfterViewInit {
-  public freightForm: FormGroup;
+  public freightForm: UntypedFormGroup;
   public price: number = 0;
   public isLoggedIn: boolean = false;
   public userCoupon: string = '';
@@ -26,10 +26,10 @@ export class UserComponentComponent implements AfterViewInit {
   @ViewChild('priceSpan') priceSpan!: ElementRef<HTMLSpanElement>;
 
   constructor(private dataSvc: DataService) {
-    this.freightForm = new FormGroup({
-      price: new FormControl(null),
-      cargoSize: new FormControl(null, Validators.required),
-      collateral: new FormControl(null, Validators.required)
+    this.freightForm = new UntypedFormGroup({
+      price: new UntypedFormControl(null),
+      cargoSize: new UntypedFormControl(null, Validators.required),
+      collateral: new UntypedFormControl(null, Validators.required)
     });
   }
 
