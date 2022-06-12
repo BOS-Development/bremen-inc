@@ -46,8 +46,8 @@ export class DataService {
     return this.http.put<Route>(this.apiUrls.RoutePut + id, { route }, { headers: this.headers });
   }
 
-  postRoute(routes: Route[]) {
-    return this.http.post<Route>(this.apiUrls.RoutePost, { routes }, { headers: this.headers });
+  postRoute(route: Route) {
+    return this.http.post<Route>(this.apiUrls.RoutePost, { route }, { headers: this.headers });
   }
 
   deleteRoute(id: number) {

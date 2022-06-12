@@ -1,8 +1,9 @@
 export interface Route {
   end: string;
-  id?: string;
+  id: string;
   modified?: string;
-  name: string;
+  name?: string;
   price: string;
   start: string;
+  isNew?: boolean;
 }

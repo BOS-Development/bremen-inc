@@ -46,16 +46,20 @@
           <h3>Price</h3>
           <div *ngIf="price > 0; else elseBlock">
             <p>Price: <span class="price-span">{{price | number}}</span></p>
-            <p>Discounted Price: <span #priceSpan class="price-span">{{discountedPrice | number}}</span> <button
-                class="btn btn-secondary ml-5" (click)="copyText()">Copy price</button> </p>
+            <p *ngIf="bestDiscount > 0">Discounted Price: <span #priceSpan class="price-span">{{discountedPrice |
+                number}}</span> <button class="btn btn-secondary ml-5" (click)="copyText()">Copy price</button> </p>
           </div>
           <ng-template #elseBlock>
-            <p>Please fill out the form</p>
+            <p class="text-danger">* Please fill out the form</p>
           </ng-template>
         </div>
       </div>
       <div class="row mt-5">
         <div class="col-sm-12">
+          <h3>Contract to:</h3>
+          <p><span #corpName>bremen inc.</span> <button class="btn btn-secondary ml-5 copy-corp-button"
+              (click)="copyTextCorp()">Copy
+              Corp Name</button></p>
           <!-- <dl>
             <dt>Reward</dt>
             <dd #reward>0 (0.00 Million ISK)</dd>

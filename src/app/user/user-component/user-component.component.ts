@@ -27,6 +27,7 @@ export class UserComponentComponent implements AfterViewInit {
   private code: string = '';
 
   @ViewChild('priceSpan') priceSpan!: ElementRef<HTMLSpanElement>;
+  @ViewChild('corpName') corpName!: ElementRef<HTMLSpanElement>;
 
   constructor(private route: ActivatedRoute, private dataSvc: DataService, private router: Router) {
     this.freightForm = new UntypedFormGroup({
@@ -64,7 +65,7 @@ export class UserComponentComponent implements AfterViewInit {
         if (data.data.user) {
           this.isLoggedIn = true;
           this.userCoupon = data.data.user.code;
-          if (data.data.bestDiscount) this.bestDiscount = +data.data.bestDiscount;
+          if (data.data.bestDiscount) this.bestDiscount = +data.data.bestDiscount.value;
           console.log(data);
         }
       });
@@ -88,7 +89,6 @@ export class UserComponentComponent implements AfterViewInit {
     } else {
       this.price = 0;
     }
-    console.log(formData);
   }
 
   copyText(): void {
@@ -96,7 +96,19 @@ export class UserComponentComponent implements AfterViewInit {
     navigator.clipboard
       .writeText(text_to_copy as string)
       .then(function () {
-        console.log(text_to_copy);
+        // console.log(text_to_copy);
+      })
+      .catch(function () {
+        console.log('err', text_to_copy);
+      });
+  }
+
+  copyTextCorp(): void {
+    let text_to_copy = this.corpName.nativeElement.textContent?.replace(/,/g, '');
+    navigator.clipboard
+      .writeText(text_to_copy as string)
+      .then(function () {
+        // console.log(text_to_copy);
       })
       .catch(function () {
         console.log('err', text_to_copy);

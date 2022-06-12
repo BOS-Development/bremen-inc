@@ -8,7 +8,7 @@
 
     <form [formGroup]="routesForm">
       <ng-container *ngFor="let route of routes; let i = index">
-        <div class="col-sm-12 mt-2 formBlock" [formGroupName]="route.name">
+        <div class="col-sm-12 mt-2 formBlock" [formGroupName]="route.id">
           <div class="row">
             <div class="col-sm-3 mt-2">
               Route Start
@@ -80,12 +80,12 @@
     </div>
   </div>
 </div>
-<div class="row">
+<!-- <div class="row">
   <div class="col-sm-12 mt-5">
     <h2>Static Information</h2>
     <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
   </div>
-</div>
+</div> -->
 
 <div class="row mt-5">
   <div class="col-sm-12">
