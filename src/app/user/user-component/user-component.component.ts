@@ -1,8 +1,8 @@
-import { JsonpClientBackend } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, UntypedFormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
-import { Subscriber, Subscription } from 'rxjs';
+import { UntypedFormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { ActivatedRoute, Router } from '@angular/router';
 interface FormModel {
   price: number;
   cargoSize: number;
@@ -17,15 +17,18 @@ interface FormModel {
 export class UserComponentComponent implements AfterViewInit {
   public freightForm: UntypedFormGroup;
   public price: number = 0;
+  public discountedPrice: number = 0;
   public isLoggedIn: boolean = false;
   public userCoupon: string = '';
+  public bestDiscount: number = 0;
   routes: any;
   private formSubsciption: Subscription | undefined;
   private minimumPrice = 5000000;
+  private code: string = '';
 
   @ViewChild('priceSpan') priceSpan!: ElementRef<HTMLSpanElement>;
 
-  constructor(private dataSvc: DataService) {
+  constructor(private route: ActivatedRoute, private dataSvc: DataService, private router: Router) {
     this.freightForm = new UntypedFormGroup({
       price: new UntypedFormControl(null),
       cargoSize: new UntypedFormControl(null, Validators.required),
@@ -34,6 +37,25 @@ export class UserComponentComponent implements AfterViewInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.code = params['code'];
+      if (this.code && localStorage.getItem('prevCode') !== this.code) {
+        this.dataSvc.signIn(this.code).subscribe((data) => {
+          localStorage.setItem('prevCode', this.code);
+          if (data && data.data) {
+            localStorage.setItem('accessToken', data.data);
+          }
+          this.getPoll();
+          this.router.navigate(['/']);
+        });
+      } else {
+        this.getPoll();
+      }
+    });
+  }
+
+  // NOTE: This poll happens either right away or after signing in.
+  private getPoll() {
     this.dataSvc
       .getPoll()
       // clone the data object, using its known Config shape
@@ -42,9 +64,12 @@ export class UserComponentComponent implements AfterViewInit {
         if (data.data.user) {
           this.isLoggedIn = true;
           this.userCoupon = data.data.user.code;
+          if (data.data.bestDiscount) this.bestDiscount = +data.data.bestDiscount;
+          console.log(data);
         }
       });
   }
+
   ngAfterViewInit(): void {
     this.formSubsciption = this.freightForm.valueChanges.subscribe((formData) => {
       this.calculateReward(formData);
@@ -59,6 +84,7 @@ export class UserComponentComponent implements AfterViewInit {
     if (formData.price > 0 && formData.cargoSize > 0 && formData.collateral > 0) {
       let potentialPrice = formData.cargoSize * formData.price + formData.collateral / 100;
       this.price = potentialPrice < this.minimumPrice ? this.minimumPrice : potentialPrice;
+      this.discountedPrice = this.price * (1 - this.bestDiscount);
     } else {
       this.price = 0;
     }
@@ -79,6 +105,6 @@ export class UserComponentComponent implements AfterViewInit {
 
   signIn(): void {
     window.location.href =
-      'https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=http%3A//localhost/callback&client_id=e0741e296ea248419868b30ea151e694&state=123';
+      'https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=http%3A//localhost%3A4200/&client_id=e0741e296ea248419868b30ea151e694&state=123';
   }
 }
