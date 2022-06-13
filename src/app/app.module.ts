@@ -8,12 +8,19 @@ import { AdminComponentComponent } from './admin/admin-component/admin-component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserComponentComponent } from './user/user-component/user-component.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth-inteceptor';
 
 @NgModule({
   declarations: [AppComponent, AdminComponentComponent, UserComponentComponent],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, AngularEditorModule, HttpClientModule],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

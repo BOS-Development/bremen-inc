@@ -7,11 +7,6 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  public headers = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Accept', 'application/vnd.bremeninc.v1+json');
-
   public apiUrls = {
     Poll: 'https://cnutrjxu4gegl4edpp4w5rbqwm0nfdez.lambda-url.eu-west-2.on.aws/',
     RouteGet: 'https://vl2ylqp2ktgzmsssyxfcicbvqa0zhtew.lambda-url.eu-west-2.on.aws/', // requires routeId
@@ -28,33 +23,26 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   getPoll() {
-    const accessToken = localStorage.getItem('accessToken');
-    let headers;
-    if (accessToken) {
-      headers = this.headers.set('Authorization', 'Bearer ' + accessToken);
-    } else {
-      headers = this.headers;
-    }
-    return this.http.get<any>(this.apiUrls.Poll, { headers });
+    return this.http.get<any>(this.apiUrls.Poll);
   }
 
   getRoute(id: number) {
-    return this.http.get<Route>(this.apiUrls.RouteGet + id, { headers: this.headers });
+    return this.http.get<Route>(this.apiUrls.RouteGet + id);
   }
 
   putRoute(id: number, route: Route) {
-    return this.http.put<Route>(this.apiUrls.RoutePut + id, { route }, { headers: this.headers });
+    return this.http.put<Route>(this.apiUrls.RoutePut + id, { route });
   }
 
   postRoute(route: Route) {
-    return this.http.post<Route>(this.apiUrls.RoutePost, { route }, { headers: this.headers });
+    return this.http.post<Route>(this.apiUrls.RoutePost, { route });
   }
 
   deleteRoute(id: number) {
-    return this.http.delete<Route>(this.apiUrls.RouteDelete + id, { headers: this.headers });
+    return this.http.delete<Route>(this.apiUrls.RouteDelete + id);
   }
 
   signIn(code: string) {
-    return this.http.post<any>(this.apiUrls.SignInEve, { data: code }, { headers: this.headers });
+    return this.http.post<any>(this.apiUrls.SignInEve, { data: code });
   }
 }

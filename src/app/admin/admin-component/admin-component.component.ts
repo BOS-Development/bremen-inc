@@ -47,7 +47,7 @@ export class AdminComponentComponent implements OnInit {
   ngOnInit() {
     this.dataSvc.getPoll().subscribe((data) => {
       this.routes = data.data.routes;
-      console.log(this.routes);
+      // console.log(this.routes);
       this.createRoutesForm(this.routes);
 
       this.coupons = data.data.discounts;
@@ -64,6 +64,7 @@ export class AdminComponentComponent implements OnInit {
 
   deleteRoute(i: number): void {
     this.routes.splice(i, 1);
+    this.createRoutesForm(this.routes);
   }
 
   verifyEntity(entityId: string) {
@@ -76,7 +77,8 @@ export class AdminComponentComponent implements OnInit {
     });
   }
 
-  createRoutesForm(routes: any) {
+  createRoutesForm(routes: Route[]) {
+    this.routesForm.controls = {};
     for (const route of routes) {
       this.routesForm.addControl(
         route.id,
@@ -100,6 +102,7 @@ export class AdminComponentComponent implements OnInit {
 
   createCouponForm(coupons: any) {
     for (const coupon of coupons) {
+      this.couponForm.removeControl;
       this.couponForm.addControl(
         coupon.id,
         new UntypedFormGroup({
@@ -125,7 +128,7 @@ export class AdminComponentComponent implements OnInit {
       routesData.push(currentRoute);
       if (route[1].isNew)
         this.dataSvc.postRoute(currentRoute).subscribe((data) => {
-          console.log('fuck off');
+          console.log(data);
         });
     });
     // console.log(routesData);
