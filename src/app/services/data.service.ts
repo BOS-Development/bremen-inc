@@ -17,7 +17,8 @@ export class DataService {
     DiscountDelete: 'https://vwpesntrbnnxlk4e5udft5ia5i0hybxw.lambda-url.eu-west-2.on.aws/', // {discountId}
     DiscountGet: 'https://53jl4pkrpqsub5yofvakdz3jfi0uhrgj.lambda-url.eu-west-2.on.aws/', // {discountId}
     DiscountPost: 'https://xaqmd7qmetxxyoarvjk35evswa0hpecd.lambda-url.eu-west-2.on.aws/',
-    DiscountPut: 'https://ggb37yyglp5a42hqq6vgpkwo3e0psdqr.lambda-url.eu-west-2.on.aws/' // {discountId}
+    DiscountPut: 'https://ggb37yyglp5a42hqq6vgpkwo3e0psdqr.lambda-url.eu-west-2.on.aws/', // {discountId}
+    EntityGet: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/' // {entityId}
   };
 
   constructor(private http: HttpClient) {}
@@ -34,15 +35,27 @@ export class DataService {
     return this.http.put<Route>(this.apiUrls.RoutePut + id, { route });
   }
 
-  postRoute(route: Route) {
-    return this.http.post<Route>(this.apiUrls.RoutePost, { route });
+  postRoute(data: Route) {
+    return this.http.post<Route>(this.apiUrls.RoutePost, { data });
   }
 
-  deleteRoute(id: number) {
+  deleteRoute(id: string) {
     return this.http.delete<Route>(this.apiUrls.RouteDelete + id);
   }
 
   signIn(code: string) {
     return this.http.post<any>(this.apiUrls.SignInEve, { data: code });
+  }
+
+  deleteDiscount(id: string) {
+    return this.http.delete<any>(this.apiUrls.DiscountDelete + id);
+  }
+
+  postDiscount(data: any) {
+    return this.http.post<Route>(this.apiUrls.DiscountPost, { data });
+  }
+
+  verifyEntity(id: string) {
+    return this.http.get<any>(this.apiUrls.EntityGet + id);
   }
 }

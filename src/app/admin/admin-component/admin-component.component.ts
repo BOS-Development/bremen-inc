@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Coupon } from 'src/app/interfaces/coupon.interface';
 import { Route } from 'src/app/interfaces/route.interface';
 import { DataService } from 'src/app/services/data.service';
 
@@ -14,7 +15,7 @@ export class AdminComponentComponent implements OnInit {
   // htmlContent = '';
 
   public routes: Route[] = [];
-  public coupons: any[] = [];
+  public coupons: Coupon[] = [];
 
   // config: AngularEditorConfig = {
   //   editable: true,
@@ -44,7 +45,7 @@ export class AdminComponentComponent implements OnInit {
   // };
   constructor(private dataSvc: DataService, private fb: UntypedFormBuilder) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataSvc.getPoll().subscribe((data) => {
       this.routes = data.data.routes;
       // console.log(this.routes);
@@ -57,27 +58,40 @@ export class AdminComponentComponent implements OnInit {
     });
   }
 
-  addRoute() {
+  addRoute(): void {
     this.routes.push({ start: '', end: '', price: '', id: this.newGuid(), isNew: true });
     this.createRoutesForm(this.routes);
   }
 
   deleteRoute(i: number): void {
+    if (!this.routes[i].isNew) {
+      this.dataSvc.deleteRoute(this.routes[i].id).subscribe((data) => {
+        console.log(data);
+      });
+    }
     this.routes.splice(i, 1);
     this.createRoutesForm(this.routes);
   }
 
-  verifyEntity(entityId: string) {
-    return 'true';
+  verifyEntity(arrayPos: string) {
+    this.dataSvc.verifyEntity(this.couponForm.controls[arrayPos].value.entityId).subscribe((data) => {
+      const index = this.coupons.findIndex((arr) => arr.id === arrayPos);
+      this.coupons[index].entityName = data.data;
+    });
   }
 
-  deleteCoupon(couponToRemove: any) {
+  addCoupon(): void {
+    this.coupons.push({ entityId: '', entityName: '', type: '', value: '', id: this.newGuid(), isNew: true });
+    this.createCouponForm(this.coupons);
+  }
+
+  deleteCoupon(couponToRemove: any): void {
     this.coupons = this.coupons.filter((coupon) => {
       return coupon.id !== couponToRemove.id;
     });
   }
 
-  createRoutesForm(routes: Route[]) {
+  createRoutesForm(routes: Route[]): void {
     this.routesForm.controls = {};
     for (const route of routes) {
       this.routesForm.addControl(
@@ -92,7 +106,7 @@ export class AdminComponentComponent implements OnInit {
     }
   }
 
-  newGuid() {
+  newGuid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8;
@@ -100,7 +114,7 @@ export class AdminComponentComponent implements OnInit {
     });
   }
 
-  createCouponForm(coupons: any) {
+  createCouponForm(coupons: any): void {
     for (const coupon of coupons) {
       this.couponForm.removeControl;
       this.couponForm.addControl(
@@ -108,13 +122,13 @@ export class AdminComponentComponent implements OnInit {
         new UntypedFormGroup({
           entityId: new UntypedFormControl(coupon.entityId, [Validators.required]),
           value: new UntypedFormControl(coupon.value, [Validators.required]),
-          id: new UntypedFormControl(coupon.id, [Validators.required])
+          isNew: new UntypedFormControl(coupon.isNew)
         })
       );
     }
   }
 
-  saveAll() {
+  saveAll(): void {
     // console.log('save');
     // console.log('routesForm', this.routesForm.value);
     // console.log('couponForm', this.couponForm.value);
@@ -125,6 +139,7 @@ export class AdminComponentComponent implements OnInit {
         id: route[0],
         ...route[1]
       };
+      console.log(currentRoute);
       routesData.push(currentRoute);
       if (route[1].isNew)
         this.dataSvc.postRoute(currentRoute).subscribe((data) => {

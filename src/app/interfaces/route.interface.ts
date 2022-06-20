@@ -6,4 +6,5 @@ export interface Route {
   price: string;
   start: string;
   isNew?: boolean;
+  deleted?: boolean;
 }
