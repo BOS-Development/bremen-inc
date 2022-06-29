@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminComponentComponent } from './admin-component.component';
@@ -8,9 +9,9 @@ describe('AdminComponentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminComponentComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientModule],
+      declarations: [AdminComponentComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

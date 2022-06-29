@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Coupon } from 'src/app/interfaces/coupon.interface';
 import { Route } from 'src/app/interfaces/route.interface';
 import { DataService } from 'src/app/services/data.service';
@@ -43,7 +43,7 @@ export class AdminComponentComponent implements OnInit {
   //     }
   //   ]
   // };
-  constructor(private dataSvc: DataService, private fb: UntypedFormBuilder) {}
+  constructor(private dataSvc: DataService) {}
 
   ngOnInit(): void {
     this.dataSvc.getPoll().subscribe((data) => {
