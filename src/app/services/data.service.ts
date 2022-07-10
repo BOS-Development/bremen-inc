@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Route } from '../interfaces/route.interface';
+import { getPoll } from '../interfaces/getPoll.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,10 @@ export class DataService {
     EntityGet: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/' // {entityId}
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getPoll() {
-    return this.http.get<any>(this.apiUrls.Poll);
+    return this.http.get<getPoll>(this.apiUrls.Poll);
   }
 
   getRoute(id: number) {

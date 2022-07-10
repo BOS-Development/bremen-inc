@@ -18,10 +18,19 @@
         <div class="col-sm-2">Contract Size:</div>
         <div class="col-sm-7">
           <div class="input-group add-on">
-            <input type="number" id="m3" class="form-control" name="cargoSize" placeholder="0"
+            <input type="number" id="cargoSize" class="form-control" name="cargoSize" placeholder="0" max="350000"
               formControlName="cargoSize">
             <div class="input-group-append">
               <div class="input-group-text">m³</div>
+            </div>
+          </div>
+          <div *ngIf="cargoSize?.invalid && (cargoSize?.dirty || cargoSize?.touched)" class="alert alert-danger">
+
+            <div *ngIf="cargoSize?.errors?.['required']">
+              Cargo size is required.
+            </div>
+            <div *ngIf="cargoSize?.errors?.['max']">
+              Max 350,000 for cargo size.
             </div>
           </div>
         </div>
@@ -32,14 +41,27 @@
         <div class="col-sm-2">Collateral:</div>
         <div class="col-sm-7">
           <div class="input-group add-on">
-            <input type="text" id="collat" class="form-control" name="collateral" placeholder="0"
-              formControlName="collateral">
+            <input type="number" id="collateral" class="form-control" name="collateral" placeholder="0"
+              max="25000000000" formControlName="collateral">
             <div class="input-group-append">
               <div class="input-group-text">ISK</div>
             </div>
           </div>
+          <div *ngIf="collateral?.invalid && (collateral?.dirty || collateral?.touched)" class="alert alert-danger">
+
+            <div *ngIf="collateral?.errors?.['required']">
+              Collateral is required.
+            </div>
+            <div *ngIf="collateral?.errors?.['max']">
+              Max 25,000,000,000 for collateral.
+            </div>
+          </div>
         </div>
         <div class="col-sm-3">(25 billion ISK max)</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-10 offset-sm-2"><span *ngIf="numberWithCommasValue">Collateral: {{ numberWithCommasValue }}
+            ISK</span></div>
       </div>
       <div class="row mt-5">
         <div class="col-sm-12 price-box">
@@ -47,7 +69,8 @@
           <div *ngIf="price > 0; else elseBlock">
             <p>Price: <span class="price-span">{{price | number}}</span></p>
             <p *ngIf="bestDiscount > 0">Discounted Price: <span #priceSpan class="price-span">{{discountedPrice |
-                number}}</span> <button class="btn btn-secondary ml-5" (click)="copyText()">Copy price</button> </p>
+                number}}</span> <button class="btn btn-secondary ml-5" (click)="copyText($event)">Copy price</button>
+            </p>
           </div>
           <ng-template #elseBlock>
             <p class="text-danger">* Please fill out the form</p>
@@ -57,8 +80,8 @@
       <div class="row mt-5">
         <div class="col-sm-12">
           <h3>Contract to:</h3>
-          <p><span #corpName>bremen inc.</span> <button class="btn btn-secondary ml-5 copy-corp-button"
-              (click)="copyTextCorp()">Copy
+          <p><span #corpName>Bremen Inc.</span> <button class="btn btn-secondary ml-5 copy-corp-button"
+              (click)="copyText($event)">Copy
               Corp Name</button></p>
           <!-- <dl>
             <dt>Reward</dt>
@@ -76,6 +99,14 @@
             <h2> You managed to double click, now it's time to grab your dick. Your code is <span
                 class="text-danger">{{userCoupon}}</span> </h2>
           </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-sm-6">
+          <img src="assets/contract1.png" alt="How to set up a contract, part 1">
+        </div>
+        <div class="col-sm-6">
+          <img src="assets/contract2.png" alt="How to set up a contract, part 2">
         </div>
       </div>
     </form>
