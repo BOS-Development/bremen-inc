@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Route } from '../interfaces/route.interface';
 import { getPoll } from '../interfaces/getPoll.interface';
+import { Coupon } from '../interfaces/coupon.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -48,11 +49,11 @@ export class DataService {
   }
 
   deleteDiscount(id: string) {
-    return this.http.delete<any>(this.apiUrls.DiscountDelete + id);
+    return this.http.delete<Coupon>(this.apiUrls.DiscountDelete + id);
   }
 
-  postDiscount(data: any) {
-    return this.http.post<Route>(this.apiUrls.DiscountPost, { data });
+  postDiscount(data: Coupon) {
+    return this.http.post<Coupon>(this.apiUrls.DiscountPost, { data });
   }
 
   verifyEntity(id: string) {

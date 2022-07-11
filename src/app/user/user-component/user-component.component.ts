@@ -46,6 +46,7 @@ export class UserComponentComponent implements AfterViewInit {
       this.code = params['code'];
       if (this.code && localStorage.getItem('prevCode') !== this.code) {
         this.dataSvc.signIn(this.code).subscribe((data) => {
+          console.log(data);
           localStorage.setItem('prevCode', this.code);
           if (data && data.data) {
             localStorage.setItem('accessToken', data.data);

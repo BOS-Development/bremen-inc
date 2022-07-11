@@ -12,11 +12,14 @@ import { DataService } from 'src/app/services/data.service';
 export class AdminComponentComponent implements OnInit {
   public routesForm: UntypedFormGroup = new UntypedFormGroup({});
   public couponForm: UntypedFormGroup = new UntypedFormGroup({});
+
+  public routes!: Route[];
+  public coupons!: Coupon[];
+
+
+  // leaving this here in case we ever need the HTML editor
+
   // htmlContent = '';
-
-  public routes: Route[] = [];
-  public coupons: Coupon[] = [];
-
   // config: AngularEditorConfig = {
   //   editable: true,
   //   spellcheck: true,
@@ -43,7 +46,7 @@ export class AdminComponentComponent implements OnInit {
   //     }
   //   ]
   // };
-  constructor(private dataSvc: DataService) {}
+  constructor(private dataSvc: DataService) { }
 
   ngOnInit(): void {
     this.dataSvc.getPoll().subscribe((data) => {
@@ -56,6 +59,43 @@ export class AdminComponentComponent implements OnInit {
 
       // this.htmlContent = data.data.htmlContent;
     });
+  }
+
+  private createRoutesForm(routes: Route[]): void {
+    this.routesForm.controls = {};
+    for (const route of routes) {
+      this.routesForm.addControl(
+        route.id,
+        new UntypedFormGroup({
+          start: new UntypedFormControl(route.start, [Validators.required]),
+          end: new UntypedFormControl(route.end, [Validators.required]),
+          price: new UntypedFormControl(route.price, [Validators.required]),
+          isNew: new UntypedFormControl(route.isNew)
+        })
+      );
+    }
+  }
+
+  private newGuid(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
+
+  private createCouponForm(coupons: any): void {
+    for (const coupon of coupons) {
+      this.couponForm.removeControl;
+      this.couponForm.addControl(
+        coupon.id,
+        new UntypedFormGroup({
+          entityId: new UntypedFormControl(coupon.entityId, [Validators.required]),
+          value: new UntypedFormControl(coupon.value, [Validators.required]),
+          isNew: new UntypedFormControl(coupon.isNew)
+        })
+      );
+    }
   }
 
   addRoute(): void {
@@ -91,48 +131,12 @@ export class AdminComponentComponent implements OnInit {
     });
   }
 
-  createRoutesForm(routes: Route[]): void {
-    this.routesForm.controls = {};
-    for (const route of routes) {
-      this.routesForm.addControl(
-        route.id,
-        new UntypedFormGroup({
-          start: new UntypedFormControl(route.start, [Validators.required]),
-          end: new UntypedFormControl(route.end, [Validators.required]),
-          price: new UntypedFormControl(route.price, [Validators.required]),
-          isNew: new UntypedFormControl(route.isNew)
-        })
-      );
-    }
-  }
-
-  newGuid(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
-  }
-
-  createCouponForm(coupons: any): void {
-    for (const coupon of coupons) {
-      this.couponForm.removeControl;
-      this.couponForm.addControl(
-        coupon.id,
-        new UntypedFormGroup({
-          entityId: new UntypedFormControl(coupon.entityId, [Validators.required]),
-          value: new UntypedFormControl(coupon.value, [Validators.required]),
-          isNew: new UntypedFormControl(coupon.isNew)
-        })
-      );
-    }
-  }
-
   saveAll(): void {
     // console.log('save');
     // console.log('routesForm', this.routesForm.value);
-    // console.log('couponForm', this.couponForm.value);
+    console.log('couponForm', this.couponForm.value);
     let routesData: any = [];
+    let couponData: any = [];
 
     Object.entries(this.routesForm.value).forEach((route: any) => {
       let currentRoute = {
@@ -143,6 +147,19 @@ export class AdminComponentComponent implements OnInit {
       routesData.push(currentRoute);
       if (route[1].isNew)
         this.dataSvc.postRoute(currentRoute).subscribe((data) => {
+          console.log(data);
+        });
+    });
+
+    Object.entries(this.couponForm.value).forEach((coupon: any) => {
+      let currentCoupon = {
+        id: coupon[0],
+        ...coupon[1]
+      };
+      console.log(currentCoupon);
+      couponData.push(currentCoupon);
+      if (coupon[1].isNew)
+        this.dataSvc.postDiscount(currentCoupon).subscribe((data) => {
           console.log(data);
         });
     });
