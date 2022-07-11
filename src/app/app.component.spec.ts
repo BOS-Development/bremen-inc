@@ -37,10 +37,12 @@ describe('AppComponent', () => {
   //   expect(app.title).toEqual('bremen-inc');
   // });
 
-  it('should render title', () => {
+  it('should render title with correct classes', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')).toBeTruthy();
+    expect(compiled.querySelector('h1')).toHaveClass('clickable');
+    expect(compiled.querySelector('h1')).toHaveClass('logo');
   });
 });
