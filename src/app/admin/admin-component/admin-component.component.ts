@@ -92,6 +92,8 @@ export class AdminComponentComponent implements OnInit {
         new UntypedFormGroup({
           entityId: new UntypedFormControl(coupon.entityId, [Validators.required]),
           value: new UntypedFormControl(coupon.value, [Validators.required]),
+          type: new UntypedFormControl(coupon.type),
+          entityName: new UntypedFormControl(coupon.entityName),
           isNew: new UntypedFormControl(coupon.isNew)
         })
       );
@@ -117,6 +119,9 @@ export class AdminComponentComponent implements OnInit {
     this.dataSvc.verifyEntity(this.couponForm.controls[arrayPos].value.entityId).subscribe((data) => {
       const index = this.coupons.findIndex((arr) => arr.id === arrayPos);
       this.coupons[index].entityName = data.data;
+      this.coupons[index].type = data.extra;
+      this.couponForm.controls[arrayPos].patchValue({ type: data.extra });
+      this.couponForm.controls[arrayPos].patchValue({ entityName: data.data });
     });
   }
 
@@ -134,7 +139,7 @@ export class AdminComponentComponent implements OnInit {
   saveAll(): void {
     // console.log('save');
     // console.log('routesForm', this.routesForm.value);
-    console.log('couponForm', this.couponForm.value);
+    // console.log('couponForm', this.couponForm.value);
     let routesData: any = [];
     let couponData: any = [];
 
@@ -143,7 +148,7 @@ export class AdminComponentComponent implements OnInit {
         id: route[0],
         ...route[1]
       };
-      console.log(currentRoute);
+      // console.log(currentRoute);
       routesData.push(currentRoute);
       if (route[1].isNew)
         this.dataSvc.postRoute(currentRoute).subscribe((data) => {
@@ -158,10 +163,11 @@ export class AdminComponentComponent implements OnInit {
       };
       console.log(currentCoupon);
       couponData.push(currentCoupon);
-      if (coupon[1].isNew)
+      if (coupon[1].isNew) {
         this.dataSvc.postDiscount(currentCoupon).subscribe((data) => {
           console.log(data);
         });
+      }
     });
     // console.log(routesData);
     // console.log('htmlContent', this.htmlContent);

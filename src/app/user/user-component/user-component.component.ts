@@ -46,7 +46,6 @@ export class UserComponentComponent implements AfterViewInit {
       this.code = params['code'];
       if (this.code && localStorage.getItem('prevCode') !== this.code) {
         this.dataSvc.signIn(this.code).subscribe((data) => {
-          console.log(data);
           localStorage.setItem('prevCode', this.code);
           if (data && data.data) {
             localStorage.setItem('accessToken', data.data);
@@ -85,15 +84,15 @@ export class UserComponentComponent implements AfterViewInit {
   }
 
   private setPageValues(pageValues: getPoll): void {
-    // let myRoutes = { value: { data: {} } };
-    // console.log(myRoutes);
+    // const { data: { routes } } = data;
+    // this.routes = routes;
+
     this.routes = pageValues.data.routes;
     if (pageValues.data.user) {
       this.isLoggedIn = true;
       this.userCoupon = pageValues.data.user.code;
       if (pageValues.data.bestDiscount) this.bestDiscount = +pageValues.data.bestDiscount.value;
     }
-    console.log(pageValues);
   }
 
   calculateReward(formData: FormModel): void {
@@ -119,7 +118,7 @@ export class UserComponentComponent implements AfterViewInit {
         // console.log(text_to_copy);
       })
       .catch(function () {
-        console.log('err', text_to_copy);
+        console.log('err: ', text_to_copy);
       });
   }
 
