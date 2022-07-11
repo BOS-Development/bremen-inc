@@ -8,7 +8,7 @@ describe('UserComponentComponent', () => {
   let component: UserComponentComponent;
   let fixture: ComponentFixture<UserComponentComponent>;
 
-  let MockRespose = {
+  let MockResponse = {
     "data": {
       "user": {
         "id": "831943198",
@@ -102,6 +102,7 @@ describe('UserComponentComponent', () => {
       }
     }
   }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientModule],
