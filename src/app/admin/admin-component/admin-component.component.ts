@@ -12,9 +12,14 @@ import { DataService } from 'src/app/services/data.service';
 export class AdminComponentComponent implements OnInit {
   public routesForm: UntypedFormGroup = new UntypedFormGroup({});
   public couponForm: UntypedFormGroup = new UntypedFormGroup({});
+  public verifyForm: UntypedFormGroup = new UntypedFormGroup({
+    coupon: new UntypedFormControl('', [Validators.required])
+  });
 
   public routes!: Route[];
   public coupons!: Coupon[];
+
+  public verifyCouponData: any;
 
 
   // leaving this here in case we ever need the HTML editor
@@ -122,6 +127,13 @@ export class AdminComponentComponent implements OnInit {
       this.coupons[index].type = data.extra;
       this.couponForm.controls[arrayPos].patchValue({ type: data.extra });
       this.couponForm.controls[arrayPos].patchValue({ entityName: data.data });
+    });
+  }
+
+  verifyCoupon() {
+    this.dataSvc.verifyCoupon(this.verifyForm.value.coupon).subscribe((data) => {
+      console.log(data);
+      this.verifyCouponData = data;
     });
   }
 

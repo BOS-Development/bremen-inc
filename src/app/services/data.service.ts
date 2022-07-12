@@ -19,7 +19,8 @@ export class DataService {
     DiscountGet: 'https://53jl4pkrpqsub5yofvakdz3jfi0uhrgj.lambda-url.eu-west-2.on.aws/', // {discountId}
     DiscountPost: 'https://xaqmd7qmetxxyoarvjk35evswa0hpecd.lambda-url.eu-west-2.on.aws/',
     DiscountPut: 'https://ggb37yyglp5a42hqq6vgpkwo3e0psdqr.lambda-url.eu-west-2.on.aws/', // {discountId}
-    EntityGet: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/' // {entityId}
+    EntityGet: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/', // {entityId}
+    verifyCoupon: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/' // {entityId}
   };
 
   constructor(private http: HttpClient) { }
@@ -58,5 +59,9 @@ export class DataService {
 
   verifyEntity(id: string) {
     return this.http.get<any>(this.apiUrls.EntityGet + id);
+  }
+
+  verifyCoupon(id: string) {
+    return this.http.get<any>(this.apiUrls.verifyCoupon + id);
   }
 }
