@@ -130,16 +130,17 @@ export class AdminComponentComponent implements OnInit {
     this.createCouponForm(this.coupons);
   }
 
-  deleteCoupon(couponToRemove: any): void {
-    this.coupons = this.coupons.filter((coupon) => {
-      return coupon.id !== couponToRemove.id;
-    });
+  deleteCoupon(i: number): void {
+    if (!this.coupons[i].isNew) {
+      this.dataSvc.deleteDiscount(this.coupons[i].id).subscribe((data) => {
+        console.log(data);
+      });
+    }
+    this.coupons.splice(i, 1);
+    this.createCouponForm(this.coupons);
   }
 
   saveAll(): void {
-    // console.log('save');
-    // console.log('routesForm', this.routesForm.value);
-    // console.log('couponForm', this.couponForm.value);
     let routesData: any = [];
     let couponData: any = [];
 
@@ -148,7 +149,7 @@ export class AdminComponentComponent implements OnInit {
         id: route[0],
         ...route[1]
       };
-      // console.log(currentRoute);
+
       routesData.push(currentRoute);
       if (route[1].isNew)
         this.dataSvc.postRoute(currentRoute).subscribe((data) => {
@@ -169,7 +170,5 @@ export class AdminComponentComponent implements OnInit {
         });
       }
     });
-    // console.log(routesData);
-    // console.log('htmlContent', this.htmlContent);
   }
 }

@@ -84,10 +84,7 @@ export class UserComponentComponent implements AfterViewInit {
   }
 
   private setPageValues(pageValues: getPoll): void {
-    // const { data: { routes } } = data;
-    // this.routes = routes;
-
-    this.routes = pageValues.data.routes;
+    this.routes = pageValues.data.routes.filter(route => !route.deleted);
     if (pageValues.data.user) {
       this.isLoggedIn = true;
       this.userCoupon = pageValues.data.user.code;
