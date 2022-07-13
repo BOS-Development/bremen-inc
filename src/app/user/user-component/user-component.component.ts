@@ -121,6 +121,6 @@ export class UserComponentComponent implements AfterViewInit {
 
   signIn(): void {
     window.location.href =
-      `https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=${environment.returnURL}&client_id=e0741e296ea248419868b30ea151e694&state=123`;
+      `https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=${environment.returnURL}&client_id=${environment.client_id}`;
   }
 }

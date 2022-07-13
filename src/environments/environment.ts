@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  returnURL: 'http%3A//localhost%3A4200/'
+  returnURL: 'http%3A//localhost%3A4200/',
+  client_id: 'e0741e296ea248419868b30ea151e694&state=123'
 };
 
 /*
