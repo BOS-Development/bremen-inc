@@ -20,7 +20,7 @@ export class DataService {
     DiscountPost: 'https://xaqmd7qmetxxyoarvjk35evswa0hpecd.lambda-url.eu-west-2.on.aws/',
     DiscountPut: 'https://ggb37yyglp5a42hqq6vgpkwo3e0psdqr.lambda-url.eu-west-2.on.aws/', // {discountId}
     EntityGet: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/', // {entityId}
-    verifyCoupon: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/' // {entityId}
+    verifyCoupon: 'https://e4vwh4popedxsreldfnjuzgipu0ynvsj.lambda-url.eu-west-2.on.aws/' // {entityId}
   };
 
   constructor(private http: HttpClient) { }
@@ -49,8 +49,8 @@ export class DataService {
     return this.http.post<any>(this.apiUrls.SignInEve, { data: code });
   }
 
-  deleteDiscount(id: string) {
-    return this.http.delete<Coupon>(this.apiUrls.DiscountDelete + id);
+  deleteDiscount(id: string, entityId: string) {
+    return this.http.delete<Coupon>(this.apiUrls.DiscountDelete + entityId + '/' + id);
   }
 
   postDiscount(data: Coupon) {

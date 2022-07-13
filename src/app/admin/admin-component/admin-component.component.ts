@@ -58,8 +58,7 @@ export class AdminComponentComponent implements OnInit {
       this.routes = data.data.routes;
       // console.log(this.routes);
       this.createRoutesForm(this.routes);
-
-      this.coupons = data.data.discounts;
+      this.coupons = data.data.discounts.filter(coupon => !coupon.deleted);
       this.createCouponForm(this.coupons);
 
       // this.htmlContent = data.data.htmlContent;
@@ -89,7 +88,7 @@ export class AdminComponentComponent implements OnInit {
     });
   }
 
-  private createCouponForm(coupons: any): void {
+  private createCouponForm(coupons: Coupon[]): void {
     for (const coupon of coupons) {
       this.couponForm.removeControl;
       this.couponForm.addControl(
@@ -133,7 +132,7 @@ export class AdminComponentComponent implements OnInit {
   verifyCoupon() {
     this.dataSvc.verifyCoupon(this.verifyForm.value.coupon).subscribe((data) => {
       console.log(data);
-      this.verifyCouponData = data;
+      this.verifyCouponData = data.data.user;
     });
   }
 
@@ -144,7 +143,7 @@ export class AdminComponentComponent implements OnInit {
 
   deleteCoupon(i: number): void {
     if (!this.coupons[i].isNew) {
-      this.dataSvc.deleteDiscount(this.coupons[i].id).subscribe((data) => {
+      this.dataSvc.deleteDiscount(this.coupons[i].id, this.coupons[i].entityId).subscribe((data) => {
         console.log(data);
       });
     }
@@ -174,7 +173,6 @@ export class AdminComponentComponent implements OnInit {
         id: coupon[0],
         ...coupon[1]
       };
-      console.log(currentCoupon);
       couponData.push(currentCoupon);
       if (coupon[1].isNew) {
         this.dataSvc.postDiscount(currentCoupon).subscribe((data) => {

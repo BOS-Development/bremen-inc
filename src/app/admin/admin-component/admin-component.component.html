@@ -102,9 +102,9 @@
             <div class="col-sm-12">
               <ul>
                 <li>Character Name: {{ verifyCouponData.name }}</li>
-                <li>Character Corp: {{ verifyCouponData.corporation }}</li>
-                <li *ngIf="verifyCouponData.alliance">Character Alliance: {{ verifyCouponData.alliance }}</li>
-                <li>Discount: {{ verifyCouponData.discount }}</li>
+                <li>Character Corp: {{ verifyCouponData.corporation.name }}</li>
+                <li *ngIf="verifyCouponData.alliance.name">Character Alliance: {{ verifyCouponData.alliance.name }}</li>
+                <li>Discount: {{ verifyCouponData.code }}</li>
               </ul>
             </div>
           </div>
