@@ -122,6 +122,9 @@
 
 <div class="row mt-5">
   <div class="col-sm-12">
-    <button class="btn btn-primary" (click)="saveAll()">Save All</button>
+    <button class="btn btn-primary"
+      [disabled]="routesForm.valid && couponForm.valid && (!routesForm.touched && !couponForm.touched)"
+      (click)="saveAll()">Save
+      All</button>
   </div>
 </div>

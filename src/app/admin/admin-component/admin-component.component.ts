@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Coupon } from 'src/app/interfaces/coupon.interface';
 import { Route } from 'src/app/interfaces/route.interface';
 import { DataService } from 'src/app/services/data.service';
@@ -20,7 +20,8 @@ export class AdminComponentComponent implements OnInit {
   public coupons!: Coupon[];
 
   public verifyCouponData: any;
-
+  private touchedRoutes: string[] = [];
+  private touchedCoupons: string[] = [];
 
   // leaving this here in case we ever need the HTML editor
 
@@ -56,7 +57,7 @@ export class AdminComponentComponent implements OnInit {
   ngOnInit(): void {
     this.dataSvc.getPoll().subscribe((data) => {
       this.routes = data.data.routes;
-      // console.log(this.routes);
+
       this.createRoutesForm(this.routes);
       this.coupons = data.data.discounts.filter(coupon => !coupon.deleted);
       this.createCouponForm(this.coupons);
@@ -111,9 +112,7 @@ export class AdminComponentComponent implements OnInit {
 
   deleteRoute(i: number): void {
     if (!this.routes[i].isNew) {
-      this.dataSvc.deleteRoute(this.routes[i].id).subscribe((data) => {
-        console.log(data);
-      });
+      this.dataSvc.deleteRoute(this.routes[i].id).subscribe();
     }
     this.routes.splice(i, 1);
     this.createRoutesForm(this.routes);
@@ -131,7 +130,6 @@ export class AdminComponentComponent implements OnInit {
 
   verifyCoupon() {
     this.dataSvc.verifyCoupon(this.verifyForm.value.coupon).subscribe((data) => {
-      console.log(data);
       this.verifyCouponData = data.data.user;
     });
   }
@@ -143,17 +141,27 @@ export class AdminComponentComponent implements OnInit {
 
   deleteCoupon(i: number): void {
     if (!this.coupons[i].isNew) {
-      this.dataSvc.deleteDiscount(this.coupons[i].id, this.coupons[i].entityId).subscribe((data) => {
-        console.log(data);
-      });
+      this.dataSvc.deleteDiscount(this.coupons[i].id, this.coupons[i].entityId).subscribe();
     }
     this.coupons.splice(i, 1);
     this.createCouponForm(this.coupons);
   }
 
   saveAll(): void {
-    let routesData: any = [];
-    let couponData: any = [];
+    let routesData: Route[] = [];
+    let couponData: Coupon[] = [];
+
+    Object.entries(this.routesForm.controls).forEach((control: any) => {
+      if (control[1].touched) {
+        this.touchedRoutes.push(control[0]);
+      }
+    });
+
+    Object.entries(this.couponForm.controls).forEach((control: any) => {
+      if (control[1].touched) {
+        this.touchedCoupons.push(control[0]);
+      }
+    });
 
     Object.entries(this.routesForm.value).forEach((route: any) => {
       let currentRoute = {
@@ -162,10 +170,8 @@ export class AdminComponentComponent implements OnInit {
       };
 
       routesData.push(currentRoute);
-      if (route[1].isNew)
-        this.dataSvc.postRoute(currentRoute).subscribe((data) => {
-          console.log(data);
-        });
+      if (route[1].isNew || this.touchedRoutes.includes(route[0]))
+        this.dataSvc.postRoute(currentRoute).subscribe();
     });
 
     Object.entries(this.couponForm.value).forEach((coupon: any) => {
@@ -174,10 +180,8 @@ export class AdminComponentComponent implements OnInit {
         ...coupon[1]
       };
       couponData.push(currentCoupon);
-      if (coupon[1].isNew) {
-        this.dataSvc.postDiscount(currentCoupon).subscribe((data) => {
-          console.log(data);
-        });
+      if (coupon[1].isNew || this.touchedCoupons.includes(coupon[0])) {
+        this.dataSvc.postDiscount(currentCoupon).subscribe();
       }
     });
   }
