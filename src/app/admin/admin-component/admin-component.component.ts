@@ -148,9 +148,6 @@ export class AdminComponentComponent implements OnInit {
   }
 
   saveAll(): void {
-    let routesData: Route[] = [];
-    let couponData: Coupon[] = [];
-
     Object.entries(this.routesForm.controls).forEach((control: any) => {
       if (control[1].touched) {
         this.touchedRoutes.push(control[0]);
@@ -169,7 +166,6 @@ export class AdminComponentComponent implements OnInit {
         ...route[1]
       };
 
-      routesData.push(currentRoute);
       if (route[1].isNew || this.touchedRoutes.includes(route[0]))
         this.dataSvc.postRoute(currentRoute).subscribe();
     });
@@ -179,7 +175,7 @@ export class AdminComponentComponent implements OnInit {
         id: coupon[0],
         ...coupon[1]
       };
-      couponData.push(currentCoupon);
+
       if (coupon[1].isNew || this.touchedCoupons.includes(coupon[0])) {
         this.dataSvc.postDiscount(currentCoupon).subscribe();
       }
