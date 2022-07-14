@@ -9,18 +9,18 @@ import { Coupon } from '../interfaces/coupon.interface';
 })
 export class DataService {
   public apiUrls = {
-    Poll: 'https://cnutrjxu4gegl4edpp4w5rbqwm0nfdez.lambda-url.eu-west-2.on.aws/',
-    RouteGet: 'https://vl2ylqp2ktgzmsssyxfcicbvqa0zhtew.lambda-url.eu-west-2.on.aws/', // requires routeId
-    RoutePut: 'https://gmi3usvmqytg2hip5eid74kba40drmxg.lambda-url.eu-west-2.on.aws/', // requires routeId
-    RoutePost: 'https://uswwm4ywmcntl7jakytb7fgrum0kvtdg.lambda-url.eu-west-2.on.aws/',
-    RouteDelete: 'https://pzin6slwz7v6wdb3bo4qux6jja0izvnc.lambda-url.eu-west-2.on.aws/', // requires routeId
-    SignInEve: 'https://hn4y2jeshujoy7r5bk6n3hr6xa0lefwr.lambda-url.eu-west-2.on.aws/',
-    DiscountDelete: 'https://vwpesntrbnnxlk4e5udft5ia5i0hybxw.lambda-url.eu-west-2.on.aws/', // {discountId}
-    DiscountGet: 'https://53jl4pkrpqsub5yofvakdz3jfi0uhrgj.lambda-url.eu-west-2.on.aws/', // {discountId}
-    DiscountPost: 'https://xaqmd7qmetxxyoarvjk35evswa0hpecd.lambda-url.eu-west-2.on.aws/',
-    DiscountPut: 'https://ggb37yyglp5a42hqq6vgpkwo3e0psdqr.lambda-url.eu-west-2.on.aws/', // {discountId}
-    EntityGet: 'https://xjtnzjn5nefdh2m4pdkin7dmda0jpnnq.lambda-url.eu-west-2.on.aws/', // {entityId}
-    verifyCoupon: 'https://e4vwh4popedxsreldfnjuzgipu0ynvsj.lambda-url.eu-west-2.on.aws/' // {entityId}
+    Poll: `https://nsf72f2hkswnf5r236jeae4mxy0ztibu.lambda-url.eu-west-2.on.aws/`,
+    DiscountDelete: `https://ar274ds7lwhha4qi4chqfnmibi0whmkr.lambda-url.eu-west-2.on.aws/`,
+    DiscountGet: `https://lim6kzxcqmdhmcdmt37jqhoby40aanps.lambda-url.eu-west-2.on.aws/`,
+    RouteGet: `https://kpuepj2pm5eglbvtx65s36ouli0rrbeu.lambda-url.eu-west-2.on.aws/`,
+    EntityGet: `https://3veea4vrj2vyzbc2ybfaho77ba0fojxf.lambda-url.eu-west-2.on.aws/`,
+    DiscountPost: `https://mov7suyvkiow525j66hjk445ka0jkzbg.lambda-url.eu-west-2.on.aws/`,
+    RoutePut: `https://uouoaxkmfcgbdvhmjao42koe4y0xiwrp.lambda-url.eu-west-2.on.aws/`,
+    DiscountPut: `https://tohkktlzzgyy2ady45p4kl2fue0spacu.lambda-url.eu-west-2.on.aws/`,
+    VerifyUserCode: `https://xgfhzto2qlc2mi27oxrruqzga40togjn.lambda-url.eu-west-2.on.aws/`,
+    SigninEve: `https://svlw3hhrbugc77oxhsw46xczdm0dfuux.lambda-url.eu-west-2.on.aws/`,
+    RouteDelete: `https://txs5uzhxs45rj5mxjkoxbkclse0twlqm.lambda-url.eu-west-2.on.aws/`,
+    RoutePost: `https://tt45w7ldgyzftb36ik2jt3sk3u0qollk.lambda-url.eu-west-2.on.aws/`,
   };
 
   constructor(private http: HttpClient) { }
@@ -46,7 +46,7 @@ export class DataService {
   }
 
   signIn(code: string) {
-    return this.http.post<any>(this.apiUrls.SignInEve, { data: code });
+    return this.http.post<any>(this.apiUrls.SigninEve, { data: code });
   }
 
   deleteDiscount(id: string, entityId: string) {
@@ -62,6 +62,6 @@ export class DataService {
   }
 
   verifyCoupon(id: string) {
-    return this.http.get<any>(this.apiUrls.verifyCoupon + id);
+    return this.http.get<any>(this.apiUrls.VerifyUserCode + id);
   }
 }
