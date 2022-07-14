@@ -84,6 +84,7 @@ export class UserComponentComponent implements AfterViewInit {
   }
 
   private setPageValues(pageValues: getPoll): void {
+    if (!pageValues) return;
     this.routes = pageValues.data.routes.filter(route => !route.deleted);
     if (pageValues.data.user) {
       this.isLoggedIn = true;
