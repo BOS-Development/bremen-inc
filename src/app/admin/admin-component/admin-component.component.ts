@@ -16,8 +16,8 @@ export class AdminComponentComponent implements OnInit {
     coupon: new UntypedFormControl('', [Validators.required])
   });
 
-  public routes!: Route[];
-  public coupons!: Coupon[];
+  public routes: Route[] = [];
+  public coupons: Coupon[] = [];
 
   public verifyCouponData: any;
   private touchedRoutes: string[] = [];
@@ -56,10 +56,14 @@ export class AdminComponentComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSvc.getPoll().subscribe((data) => {
-      this.routes = data.data.routes;
-
+      this.routes = data.data.routes || [{ start: '', end: '', price: '', id: this.newGuid(), isNew: true }];
       this.createRoutesForm(this.routes);
-      this.coupons = data.data.discounts.filter(coupon => !coupon.deleted);
+
+      if (data.data.discounts) {
+        this.coupons = data.data.discounts.filter(coupon => !coupon.deleted)
+      } else {
+        this.coupons.push({ entityId: '', entityName: '', type: '', value: '', id: this.newGuid(), isNew: true })
+      }
       this.createCouponForm(this.coupons);
 
       // this.htmlContent = data.data.htmlContent;
