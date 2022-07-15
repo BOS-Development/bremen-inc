@@ -18,7 +18,7 @@
         <div class="col-sm-2">Contract Size:</div>
         <div class="col-sm-7">
           <div class="input-group add-on">
-            <input type="number" id="cargoSize" class="form-control" name="cargoSize" placeholder="0" max="350000"
+            <input type="number" id="cargoSize" class="form-control" name="cargoSize" placeholder="0" max="385000"
               formControlName="cargoSize">
             <div class="input-group-append">
               <div class="input-group-text">m³</div>
@@ -30,11 +30,11 @@
               Cargo size is required.
             </div>
             <div *ngIf="cargoSize?.errors?.['max']">
-              Max 350,000 for cargo size.
+              Max 385,000 for cargo size.
             </div>
           </div>
         </div>
-        <div class="col-sm-3">(350,000 m³ max)</div>
+        <div class="col-sm-3">(385,000 m³ max)</div>
       </div>
 
       <div class="row">
@@ -42,7 +42,7 @@
         <div class="col-sm-7">
           <div class="input-group add-on">
             <input type="number" id="collateral" class="form-control" name="collateral" placeholder="0"
-              max="25000000000" formControlName="collateral">
+              max="50000000000" formControlName="collateral">
             <div class="input-group-append">
               <div class="input-group-text">ISK</div>
             </div>
@@ -53,7 +53,7 @@
               Collateral is required.
             </div>
             <div *ngIf="collateral?.errors?.['max']">
-              Max 25,000,000,000 for collateral.
+              Max 50,000,000,000 for collateral.
             </div>
           </div>
         </div>
