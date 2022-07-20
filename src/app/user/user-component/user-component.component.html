@@ -42,7 +42,7 @@
         <div class="col-sm-7">
           <div class="input-group add-on">
             <input type="number" id="collateral" class="form-control" name="collateral" placeholder="0"
-              max="50000000000" formControlName="collateral">
+              formControlName="collateral">
             <div class="input-group-append">
               <div class="input-group-text">ISK</div>
             </div>
@@ -53,11 +53,11 @@
               Collateral is required.
             </div>
             <div *ngIf="collateral?.errors?.['max']">
-              Max 50,000,000,000 for collateral.
+              No Max Collateral
             </div>
           </div>
         </div>
-        <div class="col-sm-3">(50 billion ISK max)</div>
+        <div class="col-sm-3"> No Max Collateral </div>
       </div>
       <div class="row">
         <div class="col-sm-10 offset-sm-2"><span *ngIf="numberWithCommasValue">Collateral: {{ numberWithCommasValue }}
@@ -96,12 +96,19 @@
       </div>
       <div class="row mt-5">
         <div class="col-sm-12">
+          <h3>Any Questions?</h3>
+          <p>Hop onto <a href="https://discord.gg/GErhgytNrf" target="_blank">Discord</a> and speak to us directly.</p>
+
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-sm-12">
           <div *ngIf="!isLoggedIn" class="sign-in-btn" (click)="signIn()">
             <img src="assets/eve-sso-login-white-small.png" class="clickable" alt="Log in to eve">
           </div>
           <div *ngIf="isLoggedIn">
-            <h2> You managed to double click, now it's time to grab your dick. <br>Your code is <span
-                class="text-danger">{{userCoupon}}</span> </h2>
+            <h4> You managed to double click, now it's time to grab your dick. <br>Your code is <span
+                class="text-danger">{{userCoupon}}</span> </h4>
           </div>
         </div>
       </div>
